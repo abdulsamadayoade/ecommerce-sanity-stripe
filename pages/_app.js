@@ -1,7 +1,23 @@
-import '../styles/globals.css'
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+	const Layout = Component.layout || (({ children }) => <>{children}</>);
+
+	return (
+		<Layout>
+			<Component {...pageProps} />
+		</Layout>
+	);
 }
 
-export default MyApp
+MyApp.getInitialProps = async ({ Component, ctx }) => {
+	let pageProps = {};
+
+	if (Component.getInitialProps) {
+		pageProps = await Component.getInitialProps(ctx);
+	}
+
+	return { pageProps };
+};
+
+export default MyApp;
